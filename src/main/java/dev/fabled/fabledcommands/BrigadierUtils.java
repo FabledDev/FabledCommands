@@ -1,0 +1,19 @@
+package dev.fabled.fabledcommands;
+
+import com.mojang.brigadier.arguments.ArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
+import net.minecraft.commands.CommandSourceStack;
+import org.jetbrains.annotations.NotNull;
+
+public final class BrigadierUtils {
+
+    static LiteralArgumentBuilder<CommandSourceStack> literal(@NotNull final String name) {
+        return LiteralArgumentBuilder.literal(name);
+    }
+
+    static <T> RequiredArgumentBuilder<CommandSourceStack, T> required(@NotNull final String name, @NotNull final ArgumentType<T> type) {
+        return RequiredArgumentBuilder.argument(name, type);
+    }
+
+}
