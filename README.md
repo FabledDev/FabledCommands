@@ -1,5 +1,5 @@
 # FabledCommands
-FabledCommands is a modern Minecraft command library utilizing [Mojang's Brigadier](https://github.com/Mojang/Brigadier) library.
+FabledCommands is a modern Minecraft command library utilizing [Mojang's Brigadier](https://github.com/Mojang/Brigadier) library.<br>
 [![Discord](https://discordapp.com/api/guilds/686041145218039861/widget.png?style=shield)](https://discord.fabled.dev)
 
 ## Dependencies
