@@ -11,6 +11,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface RequiredArg {
 
+    int position();
     String name();
     ArgType type();
 

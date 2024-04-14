@@ -9,7 +9,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface LiteralArg {
 
+    int position();
     String name();
     String[] aliases() default {};
-    
+
 }
