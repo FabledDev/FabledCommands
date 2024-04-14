@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface SubCommand {
+public @interface LiteralArg {
 
     String name();
     String[] aliases() default {};

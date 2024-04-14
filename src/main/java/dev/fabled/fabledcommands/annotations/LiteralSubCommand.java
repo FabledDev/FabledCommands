@@ -6,13 +6,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface PlayerSender {
+@Target(ElementType.TYPE)
+public @interface LiteralSubCommand {
 
-    /**
-     * The permission required for the player to execute this sub-command!
-     * @return String
-     */
-    String value() default "";
+    String name();
+    String[] aliases() default {};
+    String permission() default "";
+    String description() default "";
+    String usage() default "";
 
 }

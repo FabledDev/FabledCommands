@@ -1,7 +1,6 @@
 package dev.fabled.fabledcommands;
 
 import com.mojang.brigadier.arguments.*;
-import org.jetbrains.annotations.NotNull;
 
 public enum ArgType {
 
