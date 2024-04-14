@@ -3,12 +3,8 @@ package dev.fabled.fabledcommands;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
-import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.CommandNode;
-import dev.fabled.fabledcommands.annotations.LiteralArg;
-import dev.fabled.fabledcommands.annotations.LiteralSubCommand;
-import dev.fabled.fabledcommands.annotations.RequiredArg;
-import dev.fabled.fabledcommands.annotations.RequiredSubCommand;
+import dev.fabled.fabledcommands.annotations.*;
 import dev.fabled.fabledcommands.exceptions.InvalidSubCommandException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.SharedSuggestionProvider;
@@ -36,7 +32,31 @@ public class ArgBuilder<S> {
         isLiteral = false;
     }
 
+    public @NotNull ArgBuilder<S> then(@NotNull final ArgBuilder<S> builder) {
+        if (isLiteral) {
+            literal.then(builder.build());
+        }
+
+        else {
+            required.then(builder.build());
+        }
+
+        return this;
+    }
+
     public @NotNull ArgBuilder<S> then(@NotNull final LiteralArgumentBuilder<S> builder) {
+        if (isLiteral) {
+            literal.then(builder);
+        }
+
+        else {
+            required.then(builder);
+        }
+
+        return this;
+    }
+
+    public @NotNull ArgBuilder<S> then(@NotNull final RequiredArgumentBuilder<S, ?> builder) {
         if (isLiteral) {
             literal.then(builder);
         }
@@ -86,7 +106,7 @@ public class ArgBuilder<S> {
         }
 
         if (!clazz.isAnnotationPresent(LiteralSubCommand.class)) {
-            throw new InvalidSubCommandException("Sub-command " + clazz.getSimpleName() + " is not annotated correctly!");
+            throw new InvalidSubCommandException(clazz);
         }
 
         final LiteralSubCommand cmd = clazz.getAnnotation(LiteralSubCommand.class);
@@ -94,16 +114,17 @@ public class ArgBuilder<S> {
     }
 
     public static @NotNull ArgBuilder<CommandSourceStack> fromMethod(@NotNull final Method method) throws InvalidSubCommandException{
+        if (!(method.isAnnotationPresent(ConsoleSender.class) || method.isAnnotationPresent(PlayerSender.class))) {
+            throw new InvalidSubCommandException(method);
+        }
+
         if (method.isAnnotationPresent(RequiredArg.class)) {
             final RequiredArg cmd = method.getAnnotation(RequiredArg.class);
             return new ArgBuilder<>(BrigadierUtils.required(cmd.name(), cmd.type().get()));
         }
 
         if (!method.isAnnotationPresent(LiteralArg.class)) {
-            throw new InvalidSubCommandException(
-                    "Sub-command " + method.getDeclaringClass().getSimpleName()
-                            + "'s method " + method.getName() + " is not annotated correctly!"
-            );
+            throw new InvalidSubCommandException(method);
         }
 
         final LiteralArg cmd = method.getAnnotation(LiteralArg.class);
