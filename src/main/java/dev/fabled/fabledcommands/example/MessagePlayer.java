@@ -3,7 +3,10 @@ package dev.fabled.fabledcommands.example;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import dev.fabled.fabledcommands.ArgType;
+import dev.fabled.fabledcommands.BrigadierUtils;
 import dev.fabled.fabledcommands.FabledSubCommand;
+import dev.fabled.fabledcommands.annotations.ConsoleSender;
+import dev.fabled.fabledcommands.annotations.PlayerSender;
 import dev.fabled.fabledcommands.annotations.RequiredArg;
 import dev.fabled.fabledcommands.annotations.RequiredSubCommand;
 import net.minecraft.commands.CommandSourceStack;
@@ -29,6 +32,7 @@ public class MessagePlayer extends FabledSubCommand {
             return -1;
         }
 
+        sender.sendMessage("Input a message to send!");
         return 0;
     }
 
@@ -42,10 +46,13 @@ public class MessagePlayer extends FabledSubCommand {
             return -1;
         }
 
+        player.sendMessage("Input a message to send!");
         return 0;
     }
 
+    @ConsoleSender
     @RequiredArg(
+            position = 1,
             name = "message",
             type = ArgType.GREEDY_STRING
     )
@@ -63,7 +70,9 @@ public class MessagePlayer extends FabledSubCommand {
         return 0;
     }
 
+    @PlayerSender
     @RequiredArg(
+            position = 1,
             name = "message",
             type = ArgType.GREEDY_STRING
     )
