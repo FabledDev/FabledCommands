@@ -1,7 +1,9 @@
 package dev.fabled.fabledcommands;
 
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.tree.CommandNode;
 import dev.fabled.fabledcommands.annotations.LiteralArg;
+import dev.fabled.fabledcommands.annotations.LiteralSubCommand;
 import dev.fabled.fabledcommands.annotations.RequiredArg;
 import dev.fabled.fabledcommands.exceptions.InvalidSubCommandException;
 import net.minecraft.commands.CommandSourceStack;
@@ -15,6 +17,7 @@ import java.util.*;
 public abstract class FabledSubCommand {
 
     protected final ArgBuilder<CommandSourceStack> argBuilder;
+    protected final List<CommandNode<CommandSourceStack>> redirections;
 
     public FabledSubCommand() throws InvalidSubCommandException {
         argBuilder = ArgBuilder.fromClass(this.getClass());
@@ -65,11 +68,17 @@ public abstract class FabledSubCommand {
             argBuilders.then(arg);
         }
 
-        if (argBuilders == null) {
-            return;
+        if (argBuilders != null) {
+            argBuilder.then(argBuilders);
         }
 
-        argBuilder.then(argBuilders);
+        redirections = new ArrayList<>();
+        final LiteralSubCommand literalSubCommand = this.getClass().getAnnotation(LiteralSubCommand.class);
+        if (literalSubCommand != null) {
+            for (final String alias : literalSubCommand.aliases()) {
+                redirections.add(BrigadierUtils.literal(alias.toLowerCase()).redirect(argBuilder.build()).build());
+            }
+        }
     }
 
     public abstract int console(@NotNull final CommandSender sender, @NotNull final CommandContext<CommandSourceStack> context);

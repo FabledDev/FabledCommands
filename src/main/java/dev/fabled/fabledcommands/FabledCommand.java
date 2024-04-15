@@ -45,6 +45,7 @@ public abstract class FabledCommand {
 
         for (final FabledSubCommand subCommand : subCommands) {
             builder.then(subCommand.argBuilder.build());
+            subCommand.redirections.forEach(builder::then);
         }
 
         node = builder.build();
