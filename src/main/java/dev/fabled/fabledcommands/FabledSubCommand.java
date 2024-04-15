@@ -32,6 +32,10 @@ public abstract class FabledSubCommand {
 
         for (final Method method : methods) {
             final ArgBuilder<CommandSourceStack> methodBuilder = ArgBuilder.fromMethod(method);
+            if (methodBuilder == null) {
+                continue;
+            }
+
             int pos;
 
             if (method.isAnnotationPresent(LiteralArg.class)) {
