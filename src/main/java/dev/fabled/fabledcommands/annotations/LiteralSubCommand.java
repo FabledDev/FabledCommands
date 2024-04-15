@@ -12,7 +12,5 @@ public @interface LiteralSubCommand {
     String name();
     String[] aliases() default {};
     String permission() default "";
-    String description() default "";
-    String usage() default "";
 
 }
