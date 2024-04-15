@@ -9,10 +9,10 @@ import dev.fabled.fabledcommands.exceptions.InvalidSubCommandException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.SharedSuggestionProvider;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class ArgBuilder<S> {
 
@@ -113,9 +113,9 @@ public class ArgBuilder<S> {
         return new ArgBuilder<>(BrigadierUtils.literal(cmd.name()));
     }
 
-    public static @NotNull ArgBuilder<CommandSourceStack> fromMethod(@NotNull final Method method) throws InvalidSubCommandException{
+    public static @Nullable ArgBuilder<CommandSourceStack> fromMethod(@NotNull final Method method) throws InvalidSubCommandException {
         if (!(method.isAnnotationPresent(ConsoleSender.class) || method.isAnnotationPresent(PlayerSender.class))) {
-            throw new InvalidSubCommandException(method);
+            return null;
         }
 
         if (method.isAnnotationPresent(RequiredArg.class)) {
