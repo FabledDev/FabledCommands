@@ -18,6 +18,10 @@ dependencies {
     compileOnly 'com.mojang:brigadier:1.0.18'
 }
 
+tasks.assemble {
+    dependsOn(reobfJar)
+}
+
 test {
     useJUnitPlatform()
 }
